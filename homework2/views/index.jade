@@ -1,0 +1,24 @@
+doctype html
+html
+  head
+    link(rel="stylesheet", href="/stylesheets/style.css")
+    title E-Commerce App
+  body
+    header
+      h1 E-Commerce App
+    main
+      h2 Featured Products
+      ul
+        each product in products 
+            li
+             .square
+                h2= product.name
+                p= product.description
+                p Price: #{product.price}
+                img(src="data:image/jpeg;base64, #{images.get(product.name)}" width="150" height="150")
+                p Stocks: #{product.stocks}
+                form(action='/buy' method='POST')
+                    input(type='hidden' name='productId' value='#{product.id}')
+                    input(type='submit' value='Buy #{product.name}')
+    footer
+      p &copy; 2023 E-Commerce App. PCSD 

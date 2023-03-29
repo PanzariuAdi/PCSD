@@ -1,0 +1,22 @@
+Sure, I can provide an example of a distributed application that uses a cloud ecosystem.
+
+Let's consider a hypothetical e-commerce platform that has three components:
+
+    1. Order processing service (native cloud service) - This service is responsible for processing customer orders and updating the inventory database. It uses three native cloud services: Amazon S3 for storing product images, Amazon RDS (Relational Database Service) for storing inventory data, and Amazon SQS (Simple Queue Service) for processing order requests.
+
+    2. Product recommendation engine (on-premise application using Google Cloud service) - This component uses Google BigQuery to analyze customer purchase history and generate product recommendations. It is hosted on-premise, but it uses Google Cloud Endpoints to expose its API to other components in the distributed application.
+
+    3. Shipping notification service (FaaS) - This service is responsible for sending shipping notifications to customers. It uses AWS Lambda to process order events and send notifications via Amazon SNS (Simple Notification Service).
+
+When a customer places an order on the e-commerce platform, the following happens:
+
+    The order processing service receives the order request and updates the inventory database.
+
+    The order processing service sends an event to the shipping notification service via Amazon SQS.
+
+    The shipping notification service processes the event using AWS Lambda and sends a shipping notification to the customer via Amazon SNS.
+
+    The product recommendation engine periodically analyzes customer purchase history using Google BigQuery and generates product recommendations. The order processing service can use these recommendations to suggest related products to customers during the checkout process.
+
+In summary, this distributed application uses a combination of native cloud services, on-premise applications using Google Cloud services,
+and a FaaS service to provide a seamless e-commerce experience for customers.

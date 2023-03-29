@@ -3,8 +3,8 @@ import socket
 import sys
 
 
-HOST = "127.0.0.1"
-PORT = 8080 
+HOST = '' 
+PORT = 3389 
 BUFFER_SIZE = 65000 
 MAX_CLIENTS = 5
 

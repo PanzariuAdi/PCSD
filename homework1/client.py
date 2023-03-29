@@ -2,8 +2,8 @@ import socket
 import time
 import sys
 
-HOST = "127.0.0.1" 
-PORT = 8080 
+HOST = "34.152.3.152" 
+PORT = 3389 
 BUFFER_SIZE = 65000 
 ONE_MB_MESSAGE = 1024 * 1024 * b"x"
 
@@ -54,8 +54,9 @@ if __name__ == "__main__":
         sys.exit(0)
 
     protocol = sys.argv[1]
+    msg = ONE_MB_MESSAGE
 
     if (protocol == "tcp"):
-        create_tcp_client(ONE_MB_MESSAGE * 100)
+        create_tcp_client(msg)
     else:
-        create_udp_client(ONE_MB_MESSAGE * 100)
+        create_udp_client(msg)

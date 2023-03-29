@@ -11,7 +11,7 @@ def start_client(protocol):
 
 if __name__ == "__main__":
     total_time = 0
-    for i in range (100):
-        total_time += start_client("udp")
+    for i in range (10):
+        total_time += start_client("tcp")
 
-    print (f"\nAverage time : {total_time / 100} ")
+    print (f"\nAverage time : {total_time / 10} ")
