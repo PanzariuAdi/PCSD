@@ -3,7 +3,23 @@ const AWS = require('aws-sdk');
 const { Pool } = require('pg');
 var router = express.Router();
 
-import {ACCESS_KEY_ID, SECRET_ACCESS_KEY, HOST, USER, PASSWORD, PORT, REGION, BUCKET } from './keys.js';
+const ACCESS_KEY_ID = "AKIAUTWQYMQQ6XQHG7XK";
+const SECRET_ACCESS_KEY = "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";
+const HOST = 'homework2-database.cvstx0tpswao.eu-central-1.rds.amazonaws.com';
+const USER = 'postgres';
+const PASSWORD = 'postgres';
+const PORT = '5432'
+const BUCKET = "homework2-images-bucket";
+const REGION = 'eu-central-1';
+
+const SUCCESS_MESSAGE = "THANKS FOR BUYING OUR PRODUCT !";
+var chartProducts = [];
+
+const SQS = new AWS.SQS({ 
+    accessKeyId: ACCESS_KEY_ID,
+    secretAccessKey: SECRET_ACCESS_KEY,
+    region: REGION
+});
 
 const S3 = new AWS.S3({
     accessKeyId: ACCESS_KEY_ID,
@@ -17,20 +33,7 @@ const pool = new Pool({
     port: PORT 
 });
 
-const SQS = new AWS.SQS({ 
-    accessKeyId: ACCESS_KEY_ID,
-    secretAccessKey: SECRET_ACCESS_KEY,
-    region: REGION
-});
-
-const SUCCESS_MESSAGE = "THANKS FOR BUYING OUR PRODUCT !";
-
-router.get('/', function(req, res, next) {
-    res.render('index', { title: 'Express' });
-});
-
-
-router.get('/products', async(req, res) => {
+router.get('/', async(req, res) => {
     try {
         const productsQuery = await pool.query('SELECT * FROM products ORDER BY name');
         const products = productsQuery.rows;
@@ -60,13 +63,31 @@ router.get('/products', async(req, res) => {
         console.log(err);
         return res.sendStatus(500);
     }
-})
+});
 
+router.post('/add', function(req, res) {
+    const product = {
+        id: req.body.productId,
+        name: req.body.productName,
+        price: req.body.productPrice,
+    };
+    chartProducts.push(product);
+    res.redirect('/');
+});
+
+router.get('/chart', function(req, res) {
+    var totalPrice = 0;
+    chartProducts.forEach(element => { totalPrice += parseInt(element.price); });
+    res.render('chart', { chartProducts: chartProducts, totalPrice: totalPrice});
+});
 
 router.post('/buy', function(req, res) {
-    updateStocks(req.body.productId);
+    chartProducts.forEach(product => {
+        updateStocks(product.id);
+    })
+    chartProducts = [];
     sendSQSMessage(SUCCESS_MESSAGE);
-    res.redirect('/products');
+    res.redirect('/');
 });
 
 function updateStocks(productId) {

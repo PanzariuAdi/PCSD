@@ -17,8 +17,12 @@ html
                 p Price: #{product.price}
                 img(src="data:image/jpeg;base64, #{images.get(product.name)}" width="150" height="150")
                 p Stocks: #{product.stocks}
-                form(action='/buy' method='POST')
+                form(action='/add' method='POST')
                     input(type='hidden' name='productId' value='#{product.id}')
-                    input(type='submit' value='Buy #{product.name}')
+                    input(type='hidden' name='productName' value='#{product.name}')
+                    input(type='hidden' name='productPrice' value='#{product.price}')
+                    input(type='submit' value='Add #{product.name}')
+
+      a(href="/chart") Go to chart
     footer
-      p &copy; 2023 E-Commerce App. PCSD 
+      p &copy; 2023 UAIC 

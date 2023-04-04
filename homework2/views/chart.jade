@@ -1,0 +1,28 @@
+doctype html
+html
+  head
+    link(rel="stylesheet", href="/stylesheets/style.css")
+    title E-Commerce App
+  body
+    header
+      h1 E-Commerce App
+    main
+      h2 Chart 
+      ul
+        each product in chartProducts 
+            li
+             .square
+                h2= product.name
+                p Price: #{product.price}
+
+      h3 Total price: #{totalPrice}
+
+      form(action='/buy' method='POST')
+        .btn-buy
+            input(type='submit' value='Buy products')
+
+      a(href="/") Go home 
+
+
+    footer
+      p &copy; 2023 E-Commerce App. PCSD 
